@@ -203,9 +203,9 @@
   
         ``` C++
             const int int::operator++(int) {
-            int old = *this;
-            ++(*this);
-            return old;
+              int old = *this;
+              ++(*this);
+              return old;
             }
         ```
 
@@ -215,8 +215,8 @@
 
         ``` C++
             int& int::operator++() {
-            *this += 1;
-            return *this;
+              *this += 1;
+              return *this;
             }
         ```
 
