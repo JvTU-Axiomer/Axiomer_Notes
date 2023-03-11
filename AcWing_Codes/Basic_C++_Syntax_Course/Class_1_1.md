@@ -181,9 +181,9 @@
 ![表达式的类型](images/2023-02-26-09-34-06.png)
 
 ``` C++
-    cout << 5 % -2 << endl;
+      cout << 5 % -2 << endl;
 	  cout << -5 % 2 << endl;
-    int b = a * 10 + 5 / 2;
+      int b = a * 10 + 5 / 2;
 	  cout << b << endl;
 ```
 
