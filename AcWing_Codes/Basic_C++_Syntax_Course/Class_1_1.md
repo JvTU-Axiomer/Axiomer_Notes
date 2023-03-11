@@ -97,13 +97,17 @@
    * 可以是一个变量.
    * 也可以是一个赋值变量.
         ==整数可以赋值给浮点数==
-    `int a;`
-	`int b = 2, c = b;`
-	`float d = 1.5, e = 1, f = 1.235e12;`
-	`bool g = true, h = false;`
-	`char j= 'a', k = 'b';`
-	`long long l = 1231231LL;`
-	`long double m = 123.45f;`
+
+        ``` C++
+          int a;
+          int b = 2, c = b;
+          float d = 1.5, e = 1, f = 1.235e12;
+          bool g = true, h = false;
+          char j= 'a', k = 'b';
+          long long l = 1231231LL;
+          long double m = 123.45f;
+        ```
+  
 
 ### 2.3 输入输出
 
@@ -112,9 +116,9 @@
     输出*一个*变量：
 
     ``` C++
-    int a, b; //定义两个变量
-    cin >> a >> b;	//输入
-    cout << a + b << endl;	//输出
+        int a, b; //定义两个变量
+        cin >> a >> b;	//输入
+        cout << a + b << endl;	//输出
     ```
 
     输出*多个*变量：
