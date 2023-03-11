@@ -74,17 +74,17 @@
     }
 ```
 
-> 有效数字位数：
-    > * float：6-7位.
-    > * double：15-16位.
+> *有效数字位数：*
+    float：6-7位.
+    double：15-16位.
 
 > 99%的情况下，在算法题中选择double而不选择float，因为double的有效数字位数要多于float.
 
 > C的所有头文件都可以被C++编译，但反之不一定可以.
 
-> 头文件区别：
-    > * C++ : `cmath`     `cstdio`
-    > * C   : `math.h`    `stdio.h`
+> *头文件区别：*
+    C++ : `cmath`     `cstdio`.
+    C   : `math.h`    `stdio.h`.
 
 #### 1.1.4 例题 4
 
@@ -358,8 +358,7 @@
 > 读字符串：
 > * 字符串`string`包含在`iostream`库中.
 > * 代码模板：
-    > `string name;`
-    > `cin >> name;`
+    > `string name;` `cin >> name;`
 
 #### 1.2.1 习题 7
 
