@@ -370,13 +370,13 @@ printf("hehe");
 例如：
 
 ``` C
-int main()
-{
-    //数组的创建
-    const int n = 10;   //会报错！
-    int arr[n];
-    return 0;
-}
+    int main()
+    {
+        //数组的创建
+        const int n = 10;   //会报错！
+        int arr[n];
+        return 0;
+    }
 ```
 
 ##### 3.2.1.3 `#define`定义的标识符常量
@@ -502,43 +502,43 @@ int main()
 转义字符：转变原来的意思.
 
 ``` C
-int main()
-{
-    printf("(are you ok??)");
-    //are you ok]
-    //??) -> 三字母词 -> 代表 ]
-    printf("(are you ok\?\?)");
+    int main()
+    {
+        printf("(are you ok??)");
+        //are you ok]
+        //??) -> 三字母词 -> 代表 ]
+        printf("(are you ok\?\?)");
 
-    printf("ab\ndef");
+        printf("ab\ndef");
 
-    printf("C:\test\test.c");
-    printf("C:\\test\\test.c");
+        printf("C:\test\test.c");
+        printf("C:\\test\\test.c");
 
-    printf("%c\n", 'a');
-    printf("%c\n", ''');    //出错！
-    printf("%c\n", '\'');
+        printf("%c\n", 'a');
+        printf("%c\n", ''');    //出错！
+        printf("%c\n", '\'');
 
-    printf("%c\n", "abc");
-    printf("%c\n", "a");
-    printf("%c\n", "\"");
+        printf("%c\n", "abc");
+        printf("%c\n", "a");
+        printf("%c\n", "\"");
 
-    printf("%c\n", "'");    //$
-    printf("%s\n", "'");    //'
+        printf("%c\n", "'");    //$
+        printf("%s\n", "'");    //'
 
-    printf("%c\n", "a\\tb");
+        printf("%c\n", "a\\tb");
 
-    printf("%s\n", "abc\bdef");
+        printf("%s\n", "abc\bdef");
 
-    printf("%c\n", '\130'); //X
-    //八进制的130转换成十进制的88后，把88作为ASCII值代码代表的字符
-    printf("%c\n", '\133'); //[
-    printf("%s\n", "\13045612"); //X45612
+        printf("%c\n", '\130'); //X
+        //八进制的130转换成十进制的88后，把88作为ASCII值代码代表的字符
+        printf("%c\n", '\133'); //[
+        printf("%s\n", "\13045612"); //X45612
 
-    printf("%d\n", strlen("c:\test\x11\328\test.c"));   //字符串长度为15
-    // /32为一个转义字符，不含下一位的8，因为八进制数字不含有8
+        printf("%d\n", strlen("c:\test\x11\328\test.c"));   //字符串长度为15
+        // /32为一个转义字符，不含下一位的8，因为八进制数字不含有8
 
-    return 0;
-}
+        return 0;
+    }
 ```
 
 | 转义字符 | 释义 |
@@ -581,19 +581,19 @@ int main()
 
 
 ``` C
-/*
-* C语言的注释风格.
-*/
+    /*
+    * C语言的注释风格.
+    */
 
-/*
-    //...
     /*
         //...
+        /*
+            //...
+        */
     */
-*/
-//C语言的注释不支持嵌套注释.
+    //C语言的注释不支持嵌套注释.
 
-//C++的注释风格.
+    //C++的注释风格.
 ```
 
 ---
