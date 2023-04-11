@@ -491,4 +491,285 @@
 
 ---
 
-## 二、
+## 二、printf()语句
+
+### 2.1 
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        double f = 5.123456789;
+        printf("%.10lf\n", f);
+
+        int a = 1;
+        int b = 23;
+        int c = 456;
+        double d = 12.45;
+
+        printf("%5d!\n", a);	//不足五个字符，在前面补上剩余的空格
+        printf("%5d!\n", b);
+        printf("%5d!\n", c);
+        printf("%5.1lf\n", f);
+        printf("%05.1lf\n", f);
+        printf("%5.1lf\n", f);
+        printf("%-5.1lf\n", f);
+
+        printf("%-5d!\n", a);
+        printf("%-5d!\n", b);
+        printf("%-5d!\n", c);
+
+        printf("%05d!\n", a);
+        printf("%05d!\n", a);
+        printf("%05d!\n", a);
+    }
+```
+
+* wchar_t   用于存中文
+* `printf("%5d!\n", a);`表示不足五个字符，在前面补上剩余的空格.
+* `printf("%-5d!\n", a);`表示不足五个字符，在后面补上剩余的空格.
+* `printf("%05d!\n", a);`表示不足五个字符，在前面补上剩余位数的0.
+* `printf("%5.1lf\n", f);`表示格式化输出宽度为5，不足的位数在前面补上剩余位数的空格，并且保留1位小数的双精度浮点数.
+* `printf("%05.1lf\n", f);`表示格式化输出宽度为5，不足的位数在前面补上剩余位数的0，并且保留1位小数的双精度浮点数.
+* `printf("%-5.1lf\n", f);`表示格式化输出宽度为5，不足的位数在后面补上剩余位数的空格，并且保留1位小数的双进度浮点数.
+
+## 三、判断结构（if语句结构）
+
+### 3.1 if语句结构的基本格式
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int score;
+        cin >> score;
+        if (score >= 60)
+        {
+            cout << "及格！";
+            cout << "真棒！";
+        }
+        else
+        {
+            cout << "不及格！";
+            cout << "别灰心，再接再厉！";
+        }
+
+        cout << "结束" << endl;
+
+        return 0;
+    }
+```
+
+基本结构：
+
+``` C++
+if (条件)
+{
+    //符合条件；
+}
+else
+{
+    //不符合条件；
+}
+```
+
+> `;`表示空语句，因此在`if()`之后和`else`之后不可以加`;`.
+
+> `else`总是与它最近的、还未被匹配的`if`相对应.
+
+> 变量作用域：一个括号里可以用括号外边的变量，但是一个括号外边不能用括号里边的变量.
+
+### 3.1 if语句结构的变形格式
+
+* 格式1：
+
+``` C++
+if (条件)
+{
+    //符合条件；
+}
+```
+
+* 格式2：
+
+``` C++
+if (条件) 一句话语句;
+else (条件) 一句话语句; 
+```
+
+``` C++
+if (条件) 
+    一句话语句;
+else (条件)    
+    一句话语句; 
+```
+
+* 格式3：
+
+``` C++
+    if (条件)
+    {
+        if (条件)
+        {
+            //嵌套判断结构；
+        }
+        else
+        {
+            //不符合条件；
+        }
+    }
+    else
+    {
+        //不符合条件；
+    }
+```
+
+* 格式4（if-else级联）：
+
+#include <cstdio>
+#include <iostream>
+using namespace std;
+int main()
+{
+    int grade;
+    cin >> grade;
+    if (grade >= 85)
+    {
+        cout << "A" << endl;
+    }
+    else
+    {
+        if (grade >= 70)
+        {
+            cout << 'B' << endl;
+        }
+        else
+        {
+            if (grade >= 60)
+            {
+                cout << 'C' << endl;
+            }
+            else
+            {
+                cout << 'D' << endl;
+            }
+        }
+    }
+    return 0;
+}
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int grade;
+        cin >> grade;
+        if (grade >= 85) cout << "A" << endl;
+        else if (grade >= 70) cout << 'B' << endl;
+        else if (grade >= 60) cout << 'C' << endl;
+        else cout << 'D' << endl;
+        return 0;
+    }
+```
+
+### 3.3 比较运算符（常用的判断方式）
+
+* 大于：>
+* 小于：<
+* 大于等于：>=（不可以写成 > =）
+* 小于等于：<=
+* 等于：==
+* 不等于：!=
+
+### 3.4 课堂练习
+
+* 练习一
+
+题目：输入一个数，输出它的绝对值.
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int x;
+        cin >> x;
+        if (x >= 0)
+        {
+            cout << x << endl;
+        }
+        else
+        {
+            cout << -x << endl;
+        }
+    }
+```
+
+* 练习二
+
+题目：输入一个数，输出两个数中的较大的那个.
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int a, b;
+        cin >> a >> b;
+        if (a > b)
+        {
+            cout << a << endl;
+        }
+        else
+        {
+            cout << b << endl;
+        }
+
+        return 0;
+    }
+```
+
+* 练习三
+
+题目：输入三个整数，输出三个数中最大的那个.
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int a, b, c;
+        cin >> a >> b >> c;
+        if (a >= b)
+        {
+            if (a >= c)
+            {
+                cout << a << endl;
+            }
+            else
+            {
+                cout << c << endl;
+            }
+        }
+        else
+        {
+            if (b >= c)
+            {
+                cout << b << endl;
+            }
+            else
+            {
+                cout << c << endl;
+            }
+        }
+    }
+```
