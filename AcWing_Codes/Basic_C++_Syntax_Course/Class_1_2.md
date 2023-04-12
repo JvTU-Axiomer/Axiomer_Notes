@@ -493,8 +493,6 @@
 
 ## 二、printf()语句
 
-### 2.1 
-
 ``` C++
     #include <cstdio>
     #include <iostream>
@@ -509,7 +507,7 @@
         int c = 456;
         double d = 12.45;
 
-        printf("%5d!\n", a);	//不足五个字符，在前面补上剩余的空格
+        printf("%5d!\n", a);
         printf("%5d!\n", b);
         printf("%5d!\n", c);
         printf("%5.1lf\n", f);
@@ -524,20 +522,31 @@
         printf("%05d!\n", a);
         printf("%05d!\n", a);
         printf("%05d!\n", a);
+
+        return 0;
     }
 ```
 
-* wchar_t   用于存中文
-* `printf("%5d!\n", a);`表示不足五个字符，在前面补上剩余的空格.
-* `printf("%-5d!\n", a);`表示不足五个字符，在后面补上剩余的空格.
-* `printf("%05d!\n", a);`表示不足五个字符，在前面补上剩余位数的0.
+`printf()`语句的格式化输出：
+
+* `printf("%5d\n", a);`表示不足五个字符，在前面补上剩余的空格.
+* `printf("%-5d\n", a);`表示不足五个字符，在后面补上剩余的空格.
+* `printf("%05d\n", a);`表示不足五个字符，在前面补上剩余位数的0.
 * `printf("%5.1lf\n", f);`表示格式化输出宽度为5，不足的位数在前面补上剩余位数的空格，并且保留1位小数的双精度浮点数.
 * `printf("%05.1lf\n", f);`表示格式化输出宽度为5，不足的位数在前面补上剩余位数的0，并且保留1位小数的双精度浮点数.
 * `printf("%-5.1lf\n", f);`表示格式化输出宽度为5，不足的位数在后面补上剩余位数的空格，并且保留1位小数的双进度浮点数.
 
+> 用于高精度数据的压位应用.
+
+> `wchar_t`   用于存中文
+
+---
+
 ## 三、判断结构（if语句结构）
 
 ### 3.1 if语句结构的基本格式
+
+`if`语句：当条件成立时，执行某些语句；否则执行另一些语句.
 
 ``` C++
     #include <cstdio>
@@ -581,9 +590,9 @@ else
 
 > `else`总是与它最近的、还未被匹配的`if`相对应.
 
-> 变量作用域：一个括号里可以用括号外边的变量，但是一个括号外边不能用括号里边的变量.
+> 变量作用域：一个括号里边可以用括号外边的变量，但是一个括号外边不能用括号里边的变量.
 
-### 3.1 if语句结构的变形格式
+### 3.2 if语句结构的变形格式
 
 * 格式1：
 
@@ -595,6 +604,8 @@ if (条件)
 ```
 
 * 格式2：
+
+当只有一条语句时，大括号可以省略：
 
 ``` C++
 if (条件) 一句话语句;
@@ -611,25 +622,26 @@ else (条件)
 * 格式3：
 
 ``` C++
+if (条件)
+{
     if (条件)
     {
-        if (条件)
-        {
-            //嵌套判断结构；
-        }
-        else
-        {
-            //不符合条件；
-        }
+        //嵌套判断结构；
     }
     else
     {
         //不符合条件；
     }
+}
+else
+{
+    //不符合条件；
+}
 ```
 
 * 格式4（if-else级联）：
 
+``` C++
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -639,55 +651,97 @@ int main()
     cin >> grade;
     if (grade >= 85)
     {
-        cout << "A" << endl;
+        cout << 'A' << endl;
     }
-    else
+    else    //蕴含着grade < 85
     {
         if (grade >= 70)
         {
             cout << 'B' << endl;
         }
-        else
+        else    //蕴含着grade < 70
         {
             if (grade >= 60)
             {
                 cout << 'C' << endl;
             }
-            else
+            else    //蕴含着grade < 60
             {
                 cout << 'D' << endl;
             }
         }
     }
+
     return 0;
 }
+```
+
+> 单引号引起来的表示一个字符，双引号引起来的表示一个字符串.
 
 ``` C++
-    #include <cstdio>
-    #include <iostream>
-    using namespace std;
-    int main()
-    {
-        int grade;
-        cin >> grade;
-        if (grade >= 85) cout << "A" << endl;
-        else if (grade >= 70) cout << 'B' << endl;
-        else if (grade >= 60) cout << 'C' << endl;
-        else cout << 'D' << endl;
-        return 0;
-    }
+#include <cstdio>
+#include <iostream>
+using namespace std;
+int main()
+{
+    int grade;
+    cin >> grade;
+    if (grade >= 85) cout << "A" << endl;
+    else if (grade >= 70) cout << 'B' << endl;
+    else if (grade >= 60) cout << 'C' << endl;
+    else cout << 'D' << endl;
+    
+    return 0;
+}
 ```
 
 ### 3.3 比较运算符（常用的判断方式）
 
-* 大于：>
-* 小于：<
-* 大于等于：>=（不可以写成 > =）
-* 小于等于：<=
-* 等于：==
-* 不等于：!=
+| 比较运算符名称 | 表达式写法 |
+| ---- | ---- |
+| 大于 | > |
+| 小于 | < |
+| 大于等于 | >= |
+| 小于等于 | <= |
+| 等于 | == |
+| 不等于 | != |
 
-### 3.4 课堂练习
+> 当两个运算符连在一起时（如>=、<=、==、!=），不可以在两个符号之间加空格.
+
+### 3.4 条件表达式
+
+| 条件表达式名称 | 表达式符号 |
+| ---- | ---- |
+| 与 | && 或 and |
+| 或 | \|\| 或 or |
+| 非 | ! 或 not |
+
+``` C++
+#include <cstdio>
+#include <iostream>
+using namespace std;
+int main()
+{
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+    if (a > b && c > b) cout << "" << endl;
+    if (a > b || c > d) cout << "" << endl;
+    if (!(a > b)) cout << "" << endl;
+    if (a > b && (c > d || a > d)) cout << "" << endl;
+    if (a > b || c > d && a > d) cout << "" << endl;
+    if (a > b || !(c > d && a > d)) cout << "" << endl;
+
+    return 0;
+}
+```
+
+> `&&`短路原则：如果与表达式第一个条件不满足，后面的条件表达式就不会去执行了.
+
+> 与运算的运算优先级比或运算高.
+
+> 可以将与运算看成乘法运算，将或运算看成加法运算.
+
+### 3.5 课堂练习
 
 * 练习一
 
@@ -709,6 +763,8 @@ int main()
         {
             cout << -x << endl;
         }
+
+        return 0;
     }
 ```
 
@@ -771,5 +827,114 @@ int main()
                 cout << c << endl;
             }
         }
+
+        return 0;
     }
 ```
+
+或者：
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int a, b, c;
+        cin >> a >> b >> c;
+        if (a >= b && a >= c) cout << a << endl;
+        else if (b >= a && b >= c) cout << b << endl;
+        else if (c >= a && c >= b) cout << c << endl;
+
+        return 0;
+    }
+```
+
+* 练习四
+
+题目：简单计算器输入两个数，以及一个运算符+, -, *, /，输出这两个数运算后的结果.当运算符是/，且除数是0时，输出Divided by zero!; 当输入的字符不是+, -, *, /时，输出Invalid operator!.
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int a, b;
+        char c;
+        //scanf("%d%d %c", &a, &b, &c);
+        cin >> a >> b >> c;
+        if (c == '+') cout << a + b << endl;
+        else if (c == '-') cout << a - b << endl;
+        else if (c == '*') cout << a * b << endl;
+        else if (c == '/')
+        {
+            if (b == 0) cout << "Divided by zero!" << endl;
+            else cout << a / b << endl;
+        }
+        else cout << "Invalid operator!" << endl;
+
+        return 0;
+    }
+```
+
+* 练习五
+
+题目：判断闰年。闰年有两种情况：
+(1) 能被100整除时，必须能被400整除；
+(2) 不能被100整除时，被4整除即可.
+输入一个年份，如果是闰年输出yes，否则输出no.
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int year;
+        cin >> year;
+        if (year % 100 == 0)
+        {
+            if (year % 400 == 0)
+            {
+                cout << "yes" << endl;
+            }
+            else
+            {
+                cout << "no" << endl;
+            }
+        }
+        else
+        {
+            if (year % 4 == 0)
+            {
+                cout << "yes" << endl;
+            }
+            else
+            {
+                cout << "no" << endl;
+            }
+        }
+
+        return 0;
+    }
+```
+
+或者：
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int year;
+        cin >> year;
+        if (year % 400 == 0 || year % 100 && year % 4 == 0) cout << "yes" << endl;
+        else cout << "no" << endl;
+
+        return 0;
+    }
+```
+
+> 当我们判断一个数是否不等于0时，可以将`!=`去掉.
