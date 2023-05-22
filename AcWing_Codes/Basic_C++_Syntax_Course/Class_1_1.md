@@ -91,6 +91,79 @@
         小知识：
         16GB内存比16GB硬盘容量大.
 
+**关于浮点数的存储和表示的问题**
+
+==存储形式：==
+
+* 科学计数法.
+* `x = S * 2 ^ j`.
+
+==浮点数的比较方式：==
+
+* 浮点数的存储不是精确值.
+* 因此不能直接使用`x == y`的形式对两个浮点数进行比较.
+* 通常界定一个足够小的误差容忍值：
+  * 如果`fabs(x - y)`的值小于等于容忍值，则认为两个浮点数相等.
+  * 如果`fabs(x - y)`的值大于容忍值，则认为两个浮点数不相等.
+
+*判断两个浮点数是否相等：*
+
+``` C++
+  #include <cstdio>
+  #include <iostream>
+  using namespace std;
+  int main()
+  {
+    float a = 1.23456789;
+    printf("a = %.10f\n", a); //a = 1.1234567890.
+    float b = sqrt(a);
+    printf("b = %.10f\n", b); //b = 1.1111110449.
+
+    const double eps = 1e-6;
+    if (fabs(a - b) <= eps)
+    {
+      puts("相等！");
+    }
+    else
+    {
+      puts("不相等！");
+    }
+
+    return 0;
+  }
+```
+
+*判断一个浮点数是否小于另一个浮点数：*
+
+``` C++
+  #include <cstdio>
+  #include <iostream>
+  using namespace std;
+  int main()
+  {
+    float a = 1.23456789;
+    printf("a = %.10f\n", a); //a = 1.1234567890.
+    float b = sqrt(a);
+    printf("b = %.10f\n", b); //b = 1.1111110449.
+
+    const double eps = 1e-6;
+    if (a < b - eps)
+    {
+      puts("a < b!");
+    }
+    else
+    {
+      puts("a >= b");
+    }
+
+    return 0;
+  }
+```
+
+> `const`的用法：
+> * 效果：
+>   * 当后面想去修改`const`修饰的变量时，会发生报错.
+
 ### 2.2 变量的定义
 变量必须先定义，才可以使用。不能重名.
 变量定义的方式：

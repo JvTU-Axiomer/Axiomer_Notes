@@ -6,6 +6,16 @@
 > 程序 = 逻辑 + 数据，数组是存储数据的强而有力的手段.
 >           —— yxc
 
+> 学习编程和算法要以学习思想为主；可能没有时间学完所有知识，但是要养成遇到问题快速学习，通过练习加强理解和记忆的习惯.
+>           —— yxc
+
+> 有时候所有人都认为是正确的事情，往往是不正确的；如果所有人都知道要去买一支股票，如果你也要买这支股票，那么往往就代表你要被割韭菜了——真理往往掌握在少数人的手中.
+>           —— yxc
+
+> 学习 = 学习 + 重复.
+> 编程 = 数据结构 + 算法.
+>           —— yxc
+
 **目录：**
 
 [TOC]
@@ -504,6 +514,8 @@
 > * 曼哈顿距离.
 > * 绝对值函数`abs()`.
 
+---
+
 ## 二、数组
 
 ### 2.1 一维数组
@@ -724,3 +736,504 @@
 >   * `reverse(起始位置, 终止位置的下一个位置)`.
 > * 位置：
 >   * 存放于库`<algorithm>`中.
+
+* 练习四
+
+题目：计算2的N次方，其中N≤10000。
+
+> 高精度幂次算法：
+> 计算所得结果超出了能表示的最大范围.
+> * 因此使用一个数组来模拟结果.
+>   * 计算加、减、乘时：
+>       * 模拟进位：
+>           * 将数组翻转来存.
+>           * 索引值大的数组元素位置存放较低位.
+>           * 索引值小的数组元素位置存放较高位.
+>   * 计算除法时：
+>       * 模拟不够除而借位：
+>           * 将数组顺序存储.
+>           * 索引值大的数组元素位置存放较高位.
+>           * 索引值小的数组元素位置存放较低位.
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cmath>
+    using namespace std;
+    const int N = 3010;
+    int main()
+    {
+        int a[N] = { 1 };
+        int n;
+        cin >> n;
+        int m = 1;	//位数.
+        for (int i = 0; i < n; i++)
+        {
+            int t = 0;  //进位.
+            for (int j = 0; j < m; j++)
+            {
+                t += a[j] * 2;
+                a[j] = t % 10;
+                t /= 10;
+            }
+            if (t)
+            {
+                //有进位情况.
+                a[m++] = 1;
+            }
+        }
+
+        for (int i = m - 1; i >= 0; i--)
+        {
+            cout << a[i];
+        }
+        cout << endl;
+
+        cout << (int)pow(2, n) << endl;
+        return 0;
+    }
+```
+
+> 某一数据`x`的位数：
+> * 求`以10为底的x的对数向上取整`，即为数据`x`的`位数`.
+
+> 高精度除以高精度
+> 二分法
+> 减法运算
+> 快速傅里叶
+
+### 2.2 二维数组
+
+多维数组就是数组的数组.
+
+#### 2.2.1 二维数组的使用方法
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cmath>
+    using namespace std;
+    const int N = 3010;
+    int main()
+    {
+        int a[3][4];
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                a[i][j] = i + j;
+            }
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                cout << a[i][j] << ' ';
+            }
+            cout << endl;
+        }
+        return 0;
+    }
+```
+
+#### 2.2.2 二维数组的初始化
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cmath>
+    using namespace std;
+    const int N = 3010;
+    int main()
+    {
+        int a[3][4] = {
+            {1, 2, 3, 4},
+            {2, 2, 3, 4},
+            {3, 2, 3, 4}
+        };
+        return 0;
+    }
+```
+
+#### 2.2.3 多维数组的初始化
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cmath>
+    using namespace std;
+    const int N = 3010;
+    int main()
+    {
+        int a[2][3][4];
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    a[i][j][k] = i + j + k;
+                }
+            }
+        }
+        return 0;
+    }
+```
+
+### 2.3 C++中数组的初始化方式
+
+`memset()`函数：
+* 声明：
+  * `void * memset ( void * ptr, int value, size_t num );`.
+* 参数：
+  * 数组名字.
+  * 欲初始化的数据.
+    * 初始化的数据是按照`字节（Byte）`来计算的.
+  * 欲初始化的长度.
+    * 初始化的长度是按照`字节（Byte）`来计算的.
+* 功能：
+  * 清空数组矩阵.
+* 位置：
+  * 包含在库`<cstring>`中.
+
+> 提及网络带宽时:
+> * 一般指`Mb`.
+
+**使用方式：**
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cstring>
+    using namespace std;
+    const int N = 3010;
+    int main()
+    {
+        int a[10];
+        int b[10];
+
+        memset(a, 0, sizeof(a));
+
+        for (int i = 0; i < 10; i++)
+        {
+            cout << a[i] << ' ';
+        }
+        cout << endl;
+        //0000 0000 0000 0000 0000 0000 0000 0000
+
+        memset(a, 1, sizeof(a));
+
+        for (int i = 0; i < 10; i++)
+        {
+            cout << a[i] << ' ';
+        }
+        cout << endl;
+        //0000 0001 0000 0001 0000 0001 0000 0001
+
+        memset(a, -1, sizeof(a));
+
+        for (int i = 0; i < 10; i++)
+        {
+            cout << a[i] << ' ';
+        }
+        cout << endl;
+
+        return 0;
+    }
+```
+
+### 2.4 C++中数组的复制方式
+
+`mencpy()`函数：
+* 声明：
+  * `void * memcpy ( void * destination, const void * source, size_t num );`.
+* 参数：
+  * 目标数组的变量.
+  * 原数组的变量.
+  * 欲复制的数组长度.
+* 功能：
+  * 将一个数组中的元素复制到另一个数组中.
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cstring>
+    using namespace std;
+    const int N = 3010;
+    int main()
+    {
+        int a[10];
+        int b[10];
+        memset(a, 1, 40);
+        for (int i = 0; i < 10; i++)
+        {
+            cout << a[i] << ' ';
+        }
+        cout << endl;
+        //0000 0001 0000 0001 0000 0001 0000 0001
+
+        memcpy(b, a, sizeof(a));
+        for (int i = 0; i < 10; i++)
+        {
+            cout << b[i] << ' ';
+        }
+        cout << endl;
+
+        return 0;
+    }
+```
+
+---
+
+## 三、课堂练习
+
+* 例题一
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int a[10] = { 0 };
+        for (int i = 0; i < 10; i++)
+        {
+            cin >> a[i];
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (a[i] <= 0)
+            {
+                printf("X[%d] = 1\n", i);
+            }
+            else
+            {
+                printf("X[%d] = %d\n", i, a[i]);
+            }
+        }
+        return 0;
+    }
+```
+
+* 例题二
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int v = 0;
+        cin >> v;
+        int a[10] = { 0 };
+        a[0] = v;
+        for (int i = 1; i < 10; i++)
+        {
+            a[i] = a[i - 1] * 2;
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            printf("N[%d] = %d\n", i, a[i]);
+        }
+        return 0;
+    }
+```
+
+* 例题三
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        double a[100] = { 0 };
+        for (int i = 0; i < 100; i++)
+        {
+            cin >> a[i];
+        }
+        for (int i = 0; i < 100; i++)
+        {
+            if (a[i] <= 10)
+            {
+                printf("A[%d] = %.1lf\n", i, a[i]);
+            }
+        }
+        return 0;
+    }
+```
+
+* 例题四
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        double m[12][12];
+        int l = 0;
+        char t = '0';
+        cin >> l >> t;
+        //也可以用scanf()函数来读：
+        //scanf("%d\n%c", &l, &t);
+        for (int i = 0; i < 12; i++)
+        {
+            for (int j = 0; j < 12; j++)
+            {
+                cin >> m[i][j];
+            }
+        }
+        if (t == 'S')
+        {
+            double sum = 0;
+            for (int i = 0; i < 12; i++)
+            {
+                sum += m[l][i];
+            }
+            printf("%.1lf\n", sum);
+        }
+        else
+        {
+            double sum = 0;
+            for (int i = 0; i < 12; i++)
+            {
+                sum += m[l][i];
+            }
+            printf("%.1lf\n", sum / 12);
+        }
+        return 0;
+    }
+```
+
+* 例题五
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        double m[12][12];
+        char t = 0;
+        cin >> t;
+        for (int i = 0; i < 12; i++)
+        {
+            for (int j = 0; j < 12; j++)
+            {
+                cin >> m[i][j];
+            }
+        }
+        double sum = 0;
+        int cnt = 0;
+        for (int i = 0; i < 12; i++)
+        {
+            for (int j = i + 1; j < 12; j++)
+            {
+                sum += m[i][j];
+                cnt++;
+            }
+        }
+        if (t == 'S')
+        {
+            printf("%.1lf\n", sum);
+        }
+        else
+        {
+            printf("%.1lf\n", sum / cnt);
+        }
+        return 0;
+    }
+```
+
+* 例题六
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        double m[12][12];
+        char t = 0;
+        cin >> t;
+        for (int i = 0; i < 12; i++)
+        {
+            for (int j = 0; j < 12; j++)
+            {
+                cin >> m[i][j];
+            }
+        }
+        double sum = 0;
+        int cnt = 0;
+        for (int i = 0; i < 12; i++)
+        {
+            for (int j = 0; j < 12 - i - 1; j++)
+            {
+                sum += m[i][j];
+                cnt++;
+            }
+        }
+        if (t == 'S')
+        {
+            printf("%.1lf\n", sum);
+        }
+        else
+        {
+            printf("%.1lf\n", sum / cnt);
+        }
+        return 0;
+    }
+```
+
+> `double`数据类型不支持`自增（++）`操作.
+
+* 例题七
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        double m[12][12];
+        char t = 0;
+        cin >> t;
+        for (int i = 0; i < 12; i++)
+        {
+            for (int j = 0; j < 12; j++)
+            {
+                cin >> m[i][j];
+            }
+        }
+        double sum = 0;
+        int cnt = 0;
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = i + 1; j < 12 - i - 1; j++)
+            {
+                sum += m[i][j];
+                cnt++;
+            }
+        }
+        if (t == 'S')
+        {
+            printf("%.1lf\n", sum);
+        }
+        else
+        {
+            printf("%.1lf\n", sum / cnt);
+        }
+        return 0;
+    }
+```
+
+> 算法和开发的关系：
+> * 算法弥补了开发中的某些不足之处和问题.
+> * 开发融入了算法的思想.
+
+* 例题八
+
+``` C++
+
+```
