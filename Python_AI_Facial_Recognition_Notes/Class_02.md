@@ -170,6 +170,7 @@
     g = 'abc123'
     h = '中国人'
     print(type(g))
+    print(type(h))
 ```
 
 ==强制定义类型方法：==
