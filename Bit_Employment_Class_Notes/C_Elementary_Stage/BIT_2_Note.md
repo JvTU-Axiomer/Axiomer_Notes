@@ -2,6 +2,22 @@
 
 > 一群人的影响比一个人去努力价值更大.
 
+> C语言推荐一本书：《*明解C语言——入门篇*》.
+>       ==图文并茂，通俗易懂==.
+
+> 关于Gitee：
+> * Gitee的仓库的名字起好一点.
+>   * 名字要有意义.
+> * Gitee的仓库是可以删除的.
+> * Gitee的一个仓库中可以放很多代码.
+>   * 不是每一个代码项目都需要创建一个仓库.
+> * 鼠标要点在仓库路径下，才能看到`Add`.
+>   * 先把远程仓库克隆到本地，然后在克隆到本地的仓库路径下进行`Add`.
+> * 如果在远程仓库下进行了文件的更改和删除操作，那么在本地克隆仓库路径下需要先进行拉取（`Pull`）操作，再进行`Add`、`Commit`和`Push`操作.
+> * 提交仓库后，本地的文件最好不要删除.
+
+> Talk is cheap, show me the code!
+
 ---
 
 **目录：**
@@ -441,18 +457,18 @@ while(表达式)
 
 代码示例：
 
-> 在屏幕上打印1-10的数字.
+> 使用while循环在屏幕上打印1-10的数字.
 
 ``` C
     #define _CRT_SECURE_NO_WARNINGS 1
     #include <stdio.h>
     int main()
     {
-        int n = 1;
-        while (n <= 10)
+        int n = 1;  //循环变量的初始化.
+        while (n <= 10) //循环变量的判断.
         {
             printf("%d ", n);
-            n++;
+            n++;    //循环变量的调整.
         }
         return 0;
     }
@@ -463,7 +479,7 @@ while(表达式)
 
 #### 3.1.1 `while`语句中的`break`和`continue`
 
-**break语句：**
+**`break`语句：**
 
 `break`语句在`while`循环中的作用：
 * 在循环中只要遇到`break`，就停止后期的所有的循环，直接终止循环.
@@ -493,7 +509,7 @@ while(表达式)
 > 输出：
 > * `1 2 3 4 `.
 
-**continue语句：**
+**`continue`语句：**
 
 `continue`语句在`while`循环中的作用：
 * 本次循环中`continue`后边的代码不会再执行，而是直接跳转到`while`语句的判断部分，进行下一次循环的入口判断.
@@ -680,3 +696,626 @@ while(表达式)
         return 0;
     }
 ```
+
+### 3.2 `for`循环
+
+基本语法结构：
+
+``` C
+for(表达式1; 表达式2; 表达式3)
+{
+    循环体.
+}
+```
+
+* `表达式1`：初始化部分.
+  * 用于初始化循环变量.
+* `表达式2`：判断部分.
+  * 用于判断循环时候终止.
+* `表达式3`：调整部分.
+  * 用于循环条件的调整.
+
+代码示例：
+
+> 使用for循环在屏幕上打印1-10的数字.
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int i = 0;
+        for (i = 1; i <= 10; i++)
+        {
+            printf("%d ", i);
+        }
+        return 0;
+    }
+```
+
+#### 3.2.1 `for`循环中的`break`和`continue`
+
+**`break`语句：**
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int i = 0;
+        for (i = 1; i <= 10; i++)
+        {
+            if (i == 5)
+                break;
+            printf("%d ", i);
+        }
+        return 0;
+    }
+```
+
+> 输出：
+> * `1 2 3 4 `.
+
+**`continue`语句：**
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int i = 0;
+        for (i = 1; i <= 10; i++)
+        {
+            if (i == 5)
+                continue;
+            printf("%d ", i);
+        }
+        return 0;
+    }
+```
+
+> 输出：
+> * `1 2 3 4 6 7 8 9 10 `.
+
+> 注意：
+> 因为调整部分没有放在循环体内，因此在该案例中，与`while循环`相比，`for循环`使用`continue`不会进入死循环.
+
+==错误使用方法：==
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int i = 0;
+        for (i = 1; i <= 10; )
+        {
+            if (i == 5)
+                continue;
+            printf("%d ", i);
+            i++;
+        }
+        return 0;
+    }
+```
+
+> 输出：
+> * `1 2 3 4 //死循环...`.
+
+#### 3.2.2 `for`语句的循环控制变量
+
+小建议：
+* 不可在`for`循环体内修改循环变量，防止`for`循环失去控制.
+    ``` C
+        #include <stdio.h>
+        int main()
+        {
+            int i = 0;
+            for (i = 1; i <= 10; )
+            {
+                if (i = 5)
+                    continue;
+                printf("%d ", i);
+                i++;
+            }
+            return 0;
+        }
+    ```
+* 建议`for`语句的循环控制变量的取值采用“`前闭后开区间`”写法.
+    ``` C
+        int i = 0;
+        //前闭后开的写法
+        for(i=0; i<10; i++)
+        {
+            循环体.
+        }
+
+        //两边都是闭区间
+        for(i=0; i<=9; i++)
+        {
+            循环体.
+        }
+    ```
+    ``` C
+        #include <stdio.h>
+        int main()
+        {
+            int arr[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            int i = 0;
+            for (i = 0; i < 10; i++)
+            {
+                printf("%d ", arr[i]);
+            }
+            return 0;
+        }
+    ```
+
+> 注意：
+> * 在`for`循环的初始化部分进行变量的定义是C++的写法.
+> * 但是在`C99`中，C语言**也可以**采用这一种方式进行变量的定义和初始化.
+>   ``` C
+>   //C语言的写法：
+>   int i = 0;
+>   for (i = 0; i < 10; i++)
+>   {
+>       循环体.
+>   }
+>   //C++的写法：
+>   for (int j = 0; j < 10; j++)
+>   {
+>       循环体.
+>   }
+>   ```
+> 以上即为`for`循环**初始化变量**的两种方式.
+
+#### 3.2.3 一些`for`循环的变种
+
+==变种一：==
+
+* `for`循环中的初始化部分、判断部分、调整部分是可以省略的.
+* 判断部分省略，意味着**判断是恒为真**的.
+* 建议不要随便省略.
+
+``` C
+#include <stdio.h>
+int main()
+{
+	for ( ; ; )
+	{
+		printf("Hello world!\n");
+	}
+	return 0;
+}
+```
+
+易错代码：
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int i = 0;
+        int j = 0;
+        int cnt = 1;
+        for ( ; i < 4; i++)
+        {
+            for ( ; j < 4; j++)
+            {
+                printf("%d ", cnt);
+                cnt++;
+            }
+        }
+        return 0;
+    }
+```
+
+> 输出：
+> * `1 2 3 4 `.
+
+==变种二：==
+
+* 在`for`循环中，可以使用**多余一个变量**控制循环.
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int x, y;
+        for (x = 0, y = 0; x < 2 && y < 5; ++x, y++)
+        {
+            printf("Hello world!\n");
+        }
+        return 0;
+    }
+```
+
+易错代码：
+
+``` C
+    //请问循环要循环多少次？
+    #include <stdio.h>
+    int main()
+    {
+    int i = 0;
+    int k = 0;
+    for(i =0,k=0; k=0; i++,k++)
+            k++;
+    return 0;
+    }
+```
+
+> 在这个案例中，`for`循环一次都不执行.
+
+> 注意：
+> * 赋值表达式的执行顺序为**从右向左执行**.
+>   ``` C
+>   int a, b, c = 0;
+>   a = b = c = 7;
+>   printf("a = %d, b = %d, c = %d\n", a, b, c);
+>   ```
+>   以上代码输出结果为：
+>   * `a = 7, b = 7, c = 7`.
+> * 变量的左值和右值：
+>   ``` C
+>   int a = 10;
+>   a = 20; //左值a代表了变量的空间.
+>   int b = a;  //右值a代表了变量空间中的内容.
+>   ```
+>   左值即为**变量空间**，右值即为**变量空间中的内容**.
+
+### 3.3 `do...while()`循环
+
+基本语法结构：
+
+``` C
+do
+{
+    循环体.
+}
+while(表达式);
+```
+
+> 特点：
+> * 循环**至少执行一次**.
+> * 使用的场景有限，所以不是经常使用.
+
+代码示例：
+
+> 使用do...while()语句在屏幕上打印1-10的数字.
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int i = 1;
+        do
+        {
+            printf("%d ", i);
+            i++;
+        } while (i <= 10);
+        return 0;
+    }
+```
+
+#### 3.3.1 `do...while()`循环中的`break`和`continue`
+
+**`break`语句：**
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int i = 1;
+        do
+        {
+            if (i == 5)
+                break;
+            printf("%d ", i);
+            i++;
+        } while (i <= 10);
+        return 0;
+    }
+```
+
+> 输出：
+> * `1 2 3 4 `.
+
+**`continue`语句：**
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int i = 1;
+        do
+        {
+            if (i == 5)
+                continue;
+            printf("%d ", i);
+            i++;
+        } while (i <= 10);
+        return 0;
+    }
+```
+
+> 输出：
+> * `1 2 3 4 //死循环...`.
+
+### 3.4 课堂练习
+
+* 练习一
+
+题目：计算 n的阶乘。
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int n = 0;
+        scanf("%d", &n);
+        int ret = 1;
+        for (int i = 1; i <= n; i++)
+        {
+            ret = ret * i;
+        }
+        printf("%d\n", ret);
+        return 0;
+    }
+```
+
+> 注意：
+> * 上述代码不考虑**溢出情况**.
+
+* 练习二
+
+题目：计算 1!+2!+3!+……+10!。
+
+==方法一：==
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int n = 0;
+        scanf("%d", &n);
+        int sum = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            int ret = 1;
+            for (int j = 1; j <= i; j++)
+            {
+                ret = ret * j;
+            }
+            sum = sum + ret;
+        }
+        printf("%d\n", sum);
+        return 0;
+    }
+```
+
+==方法二：==
+
+``` C
+    #include <stdio.h>
+    int main()
+    {
+        int n = 0;
+        scanf("%d", &n);
+        int ret = 1;
+        int sum = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            ret = ret * i;
+            sum += ret;
+        }
+        printf("%d\n", sum);
+        return 0;
+    }
+```
+
+* 练习三
+
+题目：在一个有序数组中查找具体的某个数字n。
+
+> 二分查找：
+> * 前提条件：
+>   * 用于查找的内容逻辑上来说是需要有序的.
+>   * 查找的数量只能是一个，而不是多个.
+> * 区间范围和迭代方式：
+>   * 左闭右闭`[left, right]`.
+>       * 循环条件要使用`while (left <= right)`.
+>       * `if (nums[middle] > target)`，`right`要赋值为`middle - 1`.
+>   * 左闭右开`[left, right)`.
+>       * 循环条件使用`while (left < right)`.
+>       * `if (nums[middle] > target)`，`right`要赋值为`middle`.
+> * 查找步骤：
+>   1. 确定被查找的范围的左右下标`left`、`right`；
+>   2. 根据`left`和`right`，确定中间元素的下标`mid`；
+>   3. 根据`mid`锁定的元素，和查找的元素比较，确定新的查找范围的左右下标`left`和`right`.
+>   4. 返回`第2步`，循环执行，直至查找到指定元素或循环条件不满足而退出循环.
+> * 代码模板：
+>   ``` C
+>   int BinarySearch(int arr[], int len, int key)
+>   {
+>   	//确定左右下标.
+>   	int left = 0;
+>   	int right = len - 1;
+>   	while (left <= right)
+>   	{
+>   		//确定中间元素的下标.
+>   		int mid = (left + right) / 2;
+>   		//根据中间元素的值与被查找的元素的值的大小比较，调整产生新的左右下标.
+>   		if (arr[mid] == key)
+>   		{
+>   			//break跳出.
+>   			return mid;
+>   		}
+>   		else if (arr[mid] < key)
+>   		{
+>   			left = mid + 1;
+>   		}
+>   		else
+>   		{
+>   			right = mid - 1;
+>   		}
+>   	}
+>   	return -1;
+>   }
+>   ```
+> * 算法的时间复杂度：
+>   * `logn`.
+
+``` C
+    #include <stdio.h>
+    int BinarySearch(int arr[], int len, int key);
+    int main()
+    {
+        int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        int len = sizeof(arr) / sizeof(arr[0]);
+        int index = BinarySearch(arr, len, 7);
+        if (index == -1)
+        {
+            printf("找不到！");
+        }
+        else
+        {
+            printf("找到了，指定元素在数组中的下标为：%d\n", index);
+        }
+        return 0;
+    }
+
+    int BinarySearch(int arr[], int len, int key)
+    {
+        //确定左右下标.
+        int left = 0;
+        int right = len - 1;
+        while (left <= right)
+        {
+            //确定中间元素的下标.
+            int mid = (left + right) / 2;
+            //根据中间元素的值与被查找的元素的值的大小比较，调整产生新的左右下标.
+            if (arr[mid] == key)
+            {
+                //break跳出.
+                return mid;
+            }
+            else if (arr[mid] < key)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+        return -1;
+    }
+```
+
+> 小技巧：
+> * 计算**数组的长度**：
+>   * `int len = sizeof(arr) / sizeof(arr[0]);`.
+>       * 如果计算字符数组的长度，`sizeof()`计算的是**包含字符串结束标志`\0`的长度**.
+>       * 因此计算字符数组长度最好使用`strlen()函数`.
+
+* 练习四
+
+题目： 编写代码，演示多个字符从两端移动，向中间汇聚。
+
+``` C
+    #include <stdio.h>
+    #include <string.h>
+    //Sleep()需要一个<windows.h>头文件：
+    #include <windows.h>
+    int main()
+    {
+        char arr1[] = "welcome to bit!!!!!";
+        char arr2[] = "###################";
+        int left = 0;
+        int right = strlen(arr1) - 1;
+
+        while (left <= right)
+        {
+            arr2[left] = arr1[left];
+            arr2[right] = arr1[right];
+            printf("%s\n", arr2);
+            //休息一秒后唤醒：
+            Sleep(1000);	//单位是毫秒.
+            //执行系统命令：
+            system("cls");	//清理屏幕.
+            left++;
+            right--;
+        }
+        printf("%s\n", arr2);
+        return 0;
+    }
+```
+
+> 注意：
+> * `Sleep()函数`：
+>   * 传参：
+>       * 传入欲使程序休息的时间，单位是**毫秒**.
+>   * 功能：
+>       * 使程序休息指定时间后唤醒.
+>   * 位置：
+>       * 包含在库`<windows.h>`中.
+> * `system()函数`：
+>   * 传参：
+>       * 传入欲执行的指令.
+>   * 功能：
+>       * 使程序执行`Windows OS`中的指令.
+>   * 位置：
+>       * 包含在库`<windows.h>`中.
+
+* 练习五
+
+题目： 编写代码实现，模拟用户登录情景，并且只能登录三次。（只允许输入三次密码，如果密码正确则提示登录成，如果三次均输入错误，则退出程序。
+
+``` C
+    #include <stdio.h>
+    #include <string.h>
+    int main()
+    {
+        int i = 0;
+        char password[20] = { 0 };
+        for (i = 0; i < 3; i++)
+        {
+            printf("请输入密码：>\n");
+            scanf("%s", password);
+            //判断密码是否正确：
+            if (strcmp(password, "123456") == 0)
+            {
+                printf("登录成功！\n");
+                break;
+            }
+            else
+            {
+                printf("密码错误！\n");
+            }
+        }
+        if (i == 3)
+            printf("退出程序！\n");
+        return 0;
+    }
+```
+
+> 注意：
+> * 两个字符串比较相等是不能用 `==` 的.
+> * 应该用库函数`strcmp()`.
+>   * `strcmp()`返回`0`，表示两个字符串相等；
+>   * `strcmp()`返回`大于0`的数字，表示第一个字符串大于第二个字符串.
+>   * `strcmp()`返回`小于0`的数字，表示第一个字符串小于第二个字符串.
+>       * 字符串比较大小的原则：比较对应位置上的字符的`ASCII码`值.
+
+> 注意：
+> * `scanf()`函数在读取从键盘输入程序的字符串到字符数组中时，会将用户输入的字符串的结束标志`\0`**一并读入字符数组中**.
+>   ``` C
+>   int main()
+>   {
+>       char arr[] = "xxxxxxxxxx";
+>       scanf("%s", arr);
+>       return 0;
+>   }
+>   ```
+>   * 输入：`abc\n`.
+>   * 输出：
+>       * 字符数组`arr`中的字符元素为：
+>           ![调试窗口中字符数组`arr`中的字符元素](./assets/20230605175025.png)
+>
+>   可见输入字符串的结束标志`\0`也被包括在字符数组`arr`中.
