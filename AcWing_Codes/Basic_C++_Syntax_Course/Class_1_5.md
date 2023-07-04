@@ -749,7 +749,7 @@
 
 ## 二、字符与整数的联系——ASCII码
 
-每个常用字符都对应一个`-128~127`的数字，二者之间可以**相互转化**：
+每个常用字符都对应一个`0~127`的数字，二者之间可以**相互转化**：
 
 ``` C++
     #include <cstdio>
@@ -801,6 +801,9 @@
         return 0;
     }
 ```
+
+> 注意：
+> * 负数并没有与之对应的字符.
 
 ==练习：== 
 * 题目：
@@ -970,7 +973,9 @@
 
 1. 在利用`cin`和`scanf()`函数将输入的字符串读入字符数组中时，**并非将在控制台输入的字符串按行读入**，而是读入到`空格`、`回车`、`文件结束符`为止；但是在输出字符串时，遇到空格或者回车**不会停止**.
      * 读入一整行字符的方式：
-       * **在字符数组中**，使用`fgets()`函数读入一整行元素.
+       * **在字符数组中：**
+         * 使用`fgets()`函数读入一整行元素.
+         * 使用`cin.getline()`函数读入一整行元素.
        * **在字符串中**，使用`getline()`函数读入一整行元素.
      * 示例代码：
         ``` C++
@@ -1007,6 +1012,7 @@
 >       * `Max_Nums`：最多读入的字符.
 >           * 由于字符串结尾为空字符（`\0`），因此`Max_Nums`一定要**大于**待读入的字符数（至少为`待读入的字符数 + 1`），否则最多只能读`Max_Nums - 1`个字符.
 >       * `stdin`：读入字符的来源文件，是系统内已经定义好的变量.
+>           * 即标准读入，也就是把终端作为文件读入.
 >   * 在利用`fgets()`函数进行读取时，即使`Max_Nums`大于字符数组的初始化长度，读入时最多只能读`字符数组初始化长度 - 1`个字符，其余字符将会被截断，体现了`fgets()`函数的**安全性**.
 >   * 使用时注意事项：
 >       * `fgets()`函数会吸收缓冲区中的回车符（`\n`），并且会自动在输入流末尾添加空字符（`\0`）.
@@ -1038,9 +1044,19 @@
 >                   return 0;
 >               }
 >           ```
-> * `getline(cin, str)`：
+> * `cin.getline(str, Max_Nums)`：
 >   * 位置：
->       * 包含在`<cstring>`头文件中.
+>       * 包含在`<iostream>`头文件中，是`cin`的一个成员函数.
+>   * 功能：
+>       * 取一行字符串，读到换行符`\n`结束，并且抛弃换行符；如果需要读取字符，则接着下一行读取.
+>   * 参数声明：
+>       * `str`：将输入的字符读入到的目的字符串.
+>       * `Max_Nums`：一行最多读入的字符数.
+> * `getline(cin, str)`：
+>   * 功能：
+>       * 取一行字符串，读到换行符`\n`结束，并且抛弃换行符；如果需要读取字符，则接着下一行读取.
+>   * 位置：
+>       * 包含在`<cstring>`或者`<string>`头文件中.
 >   * 参数声明：
 >       * `cin`：系统内已经定义好的变量.
 >       * `str`：将输入的字符读入到的目的字符串.
@@ -1057,3 +1073,544 @@
 
 > 注意：
 > **计算机底层**知识性的东西比较多，现查现学也不会太慢；但是**算法**不一样，如果现查现学的话（例如最短路径问题），则会耽误太多时间.
+
+### 3.3 字符数组的常用操作
+
+> 注意：
+> * 下面几个函数需要引入**头文件**：
+>   * `#include <string.h>`.
+> * 常用的库`<xxxx.h>`都可以用库`<cxxxx>`来代替.
+
+#### 3.3.1 `strlen(str)`操作函数
+
+函数原型：`size_t strlen ( const char * str )`.
+* 功能：
+  * 求字符串的==长度==.
+
+> 注意：
+> * `strlen()`函数计算字符串的元素时，`\0`元素不计入其中.
+
+#### 3.3.2 `strcmp(a, b)`操作函数
+
+函数原型：`int strcmp ( const char * str1, const char * str2 )`.
+* 功能：
+  * 比较两个字符串的==大小==.
+    * `a < b`返回`-1`；`a == b`返回`0`；`a > b`返回`1`. 
+  * 比较方式：
+    * 字典序.
+      * 按照字典中出现的先后顺序进行排序.
+      * 两个字符串比较大小，是按照从左到右的顺序进行比较，如果第`1`位相等，就比较第`2`位，直至有一位可以比较出大小来，则不再继续比较.
+
+> 注意：
+> * 字典序通常与**贪心策略**相联系.
+
+#### 3.3.3 `strcpy(a, b)`操作函数
+
+函数原型：`char * strcpy ( char * destination, const char * source )`.
+* 功能：
+  * 将字符串`b`==复制==给从`a`开始的字符数组.
+
+#### 3.3.4 示例代码
+
+``` C++
+    #include <iostream>
+    #include <string.h>
+
+    using namespace std;
+
+    int main()
+    {
+        char a[100] = "hello world!", b[100];
+
+        cout << strlen(a) << endl;
+
+        strcpy(b, a);
+
+        cout << strcmp(a, b) << endl;
+
+        return 0;
+    }
+```
+
+### 3.4 遍历字符数组中的字符
+
+``` C++
+    #include <iostream>
+    #include <string.h>
+
+    using namespace std;
+
+    int main()
+    {
+        char a[100] = "hello world!";
+
+        // 注意：下述for循环每次均会执行strlen(a)，运行效率较低，最好将strlen(a)用一个变量存下来
+        for (int i = 0, len = strlen(a); i < len; i ++ )
+            cout << a[i] << endl;
+
+        return 0;
+    }
+```
+
+**练习：**
+
+* 练习一
+
+题目：给定一个只包含小写字母的字符串，请你找到第一个仅出现一次的字符.如果存在，则输出满足条件的字符中位置最靠前的那一个；如果没有，输出no.
+
+==方法一：==
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cstring>
+    using namespace std;
+
+    int cnt[26];
+    char str[1000010];
+
+    int main()
+    {
+        cin >> str;
+        int len = strlen(str);
+        for (int i = 0; i < len; i++)
+        {
+            cnt[str[i] - 'a']++;
+        }
+        for (int i = 0; i < len; i++)
+        {
+            if (cnt[str[i] - 'a'] == 1)
+            {
+                cout << str[i] << endl;
+                return 0;
+            }
+        }
+        puts("no");
+        return 0;
+    }
+```
+
+==方法二：==
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cstring>
+    using namespace std;
+
+    int cnt[26];
+    char str[1000010];
+
+    int main()
+    {
+        cin >> str;
+        int len = strlen(str);
+        for (int i = 0; str[i]; i++)
+        {
+            cnt[str[i] - 'a']++;
+        }
+        for (int i = 0; str[i]; i++)
+        {
+            if (cnt[str[i] - 'a'] == 1)
+            {
+                cout << str[i] << endl;
+                return 0;
+            }
+        }
+        puts("no");
+        return 0;
+    }
+```
+
+* 练习二：
+
+题目：把一个字符串中特定的字符全部用给定的字符`#`替换，得到一个新的字符串.
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cstring>
+    using namespace std;
+
+    int main()
+    {
+        char str[31];
+        scanf("%s", str);
+
+        char c;
+        //手动过滤掉缓冲区中的回车符.
+        scanf("\n%c", &c);
+
+        for (int i = 0; str[i]; i++)
+        {
+            if (str[i] == c)
+            {
+                str[i] = '#';
+            }
+        }
+        return 0;
+    }
+```
+
+---
+
+## 四、标准库类型`string`
+
+> `string`：
+> * **可变长**的字符序列，比字符数组更加好用.
+> * 需要引入**头文件**：
+>   * `#include <string>`.
+>       * 库`<cstring>`定义了很多字符串的类型及操作，而库`<string>`只定义了`string`这一个类型.
+
+### 4.1 `string`的定义和初始化
+
+``` C++
+    #include <iostream>
+    #include <string>
+
+    using namespace std;
+
+    int main()
+    {
+        string s1;              // 默认初始化，s1是一个空字符串
+        string s2 = s1;         // s2是s1的副本，注意s2只是与s1的值相同，并不指向同一段地址
+        string s3 = "hiya";     // s3是该字符串字面值的副本
+        string s4(10, 'c');     // s4的内容是 "cccccccccc"
+
+        return 0;
+    }
+```
+
+### 4.2 `string`上的操作
+
+#### 4.2.1 `string`的读写
+
+``` C++
+    #include <iostream>
+    #include <string>
+
+    using namespace std;
+
+    int main()
+    {
+        string s1, s2;
+
+        cin >> s1 >> s2;
+        cout << s1 << s2 << endl;
+
+        return 0;
+    }
+```
+
+> 注意：
+> * 不能用`printf()`直接输出`string`.
+>   * 需要写成：`printf(“%s”, str.c_str())`.
+> * `puts()`函数：
+>   * 功能：
+>       * `puts(arr)` 等价于 `printf("%s\n", arr)`.
+
+#### 4.2.2 使用`getline()`读取一整行
+
+``` C++
+    #include <iostream>
+    #include <string>
+
+    using namespace std;
+
+    int main()
+    {
+        string s;
+
+        getline(cin, s);
+
+        cout << s << endl;
+
+        return 0;
+    }
+```
+
+#### 4.2.3 `string`的`empty`和`size`操作
+
+**`str.empty`操作：**
+* 功能：
+  * 判断一个`string`对象==是否为空==.
+* 返回值类型：
+  * 返回一个布尔类型：
+    * 如果为空，则返回`true`.
+    * 如果不为空，则返回`false`.
+
+**`str.size`操作：**
+* 功能：
+  * 返回一个`string`对象的==长度==.
+    * 返回值类型为无符号整数.
+    * 返回的长度中==不包含==字符串结束标志`\0`.
+
+> 注意：
+> * `size`是无符号整数，因此 `s.size() <= -1` 一定成立.
+
+**示例代码：**
+
+``` C++
+    #include <iostream>
+    #include <string>
+
+    using namespace std;
+
+    int main()
+    {
+        string s1, s2 = "abc";
+
+        cout << s1.empty() << endl;
+        cout << s2.empty() << endl;
+
+        cout << s2.size() << endl;
+
+        return 0;
+    }
+```
+
+#### 4.2.4 `string`的比较
+
+`string`支持 `>`，`<`，`>=`，`<=`，`==`，`!=`等所有比较操作，按**字典序**进行比较.
+
+#### 4.2.5 为`string`对象赋值
+
+``` C++
+    string s1(10, 'c'), s2;     // s1的内容是 cccccccccc；s2是一个空字符串
+    s1 = s2;                    // 赋值：用s2的副本替换s1的副本
+                                // 此时s1和s2都是空字符串
+```
+
+#### 4.2.6 `string`的相加操作
+
+两个`string`对象的相加操作，实质是这两个`string`对象进行**拼接操作**.
+
+``` C++
+    string s1 = "hello,  "", s2 = "world\n";
+    string s3 = s1 + s2;                    // s3的内容是 hello, world\n
+    s1 += s2;                               // s1 = s1 + s2
+```
+
+> 注意：
+> * `string`对象之间**不支持**进行相乘和相除的操作.
+
+#### 4.2.7 字面值和`string`对象相加操作
+
+做加法运算时，字面值和字符都会被转化成`string`对象，因此**直接相加就是将这些字面值串联起来**：
+
+``` C++
+    string s1 = "hello", s2 = "world";      // 在s1和s2中都没有标点符号
+    string s3 = s1 + ", " + s2 + '\n';
+```
+
+当把`string`对象和字符字面值及字符串字面值混在一条语句中使用时，**必须确保每个加法运算符的两侧的运算对象至少有一个是`string`**：
+
+``` C++
+    string s4 = s1 + ", ";  // 正确：把一个string对象和有一个字面值相加
+    string s5 = "hello" + ", "; // 错误：两个运算对象都不是string
+
+    string s6 = s1 + ", " + "world";  // 正确，每个加法运算都有一个运算符是string
+    string s7 = "hello" + ", " + s2;  // 错误：不能把字面值直接相加，运算是从左到右进行的
+```
+
+### 4.3 处理`string`对象中的字符
+
+可以将`string`对象当成**字符数组**来处理：
+
+``` C++
+    #include <iostream>
+    #include <string>
+
+    using namespace std;
+
+    int main()
+    {
+        string s = "hello world";
+
+        for (int i = 0; i < s.size(); i ++ )
+            cout << s[i] << endl;
+
+        return 0;
+    }
+```
+
+或者使用**基于范围**的`for`语句（**范围遍历**）：
+
+``` C++
+    #include <iostream>
+    #include <string>
+
+    using namespace std;
+
+    int main()
+    {
+        string s = "hello world";
+
+        //遍历字符串s中的每一个字符：
+        for (char c: s) cout << c << endl;
+
+        //遍历字符串s中的每一个字符并改变字符c的值：
+        for (char &c: s) c = 'a';
+
+        //auto：使编译器猜测修饰的变量的类型；如果无法猜出，则编译器会报错.
+        for (auto &c: s) c = 'a';
+
+        cout << s << endl;
+
+        return 0;
+    }
+```
+
+> `auto`的用法：
+> * 功能：
+>   * 使编译器**猜测修饰的变量的类型**；如果无法猜出，则编译器会**报错**.
+> * 使用场景：
+>   * 如果==变量的类型是确定的==，那么可以使用`auto`来代替一些定义起来非常复杂的数据类型.
+>   * 如果==变量的类型有多种选择情况==，那么最好不要使用`auto`来代替数据类型的定义，而选择自己对数据类型进行定义.
+
+**练习：**
+
+* 练习一
+
+题目：密码翻译，输入一个只包含小写字母的字符串，将其中的每个字母替换成它的后继字母.如果原字母是'`z`'，则替换成'`a`'.注意字符串中可能包含空格.
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    int main()
+    {
+        string s;
+        getline(cin, s);
+        for (auto& c : s)
+        {
+            if (c >= 'a' && c <= 'z')
+            {
+                c = (c - 'a' + 1) % 26 + 'a';
+            }
+            else if (c >= 'A' && c <= 'Z')
+            {
+                c = (c - 'A' + 1) % 26 + 'A';
+            }
+        }
+        return 0;
+    }
+```
+
+> 注意：
+> * 出现`未定义标识符"getline"`报错原因：
+>   * 导入的是库`<cstring>`，而未导入包含`getline()`函数的库`<string>`.
+
+---
+
+## 五、1.5 题目讲解
+
+### 5.1 例题讲解
+
+#### 5.1.1 例题 1
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cstring>
+    using namespace std;
+    #define MAX 1000
+    int main()
+    {
+        char arr[1000];
+        fgets(arr, 101, stdin);
+        int len = strlen(arr);
+        cout << len << endl;
+
+        return 0;
+    }
+```
+
+> `Window操作系统`下的**回车包含两个符号**：`\r`和`\n`.
+
+#### 5.1.2 例题 2
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <cstring>
+    #include <string>
+    using namespace std;
+
+    int main()
+    {
+        char str[101];
+        fgets(str, 101, stdin);
+        int cnt = 0;
+        for (int i = 0; str[i]; i++)
+            if (str[i] >='0' && str[i] <= '9')
+            {
+                cnt++;
+            }
+        printf("%d\n", cnt);
+
+        return 0;
+    }
+```
+
+#### 5.1.3 例题 3
+
+> 思路：
+> * 首先将三种情况数字化：
+>   * `猎人` -> `0`.
+>   * `狗熊` -> `1`.
+>   * `枪` -> `2`.
+> * 给定P1和P2的出拳情况`(x, y)`，判断输赢方法：
+>   * 如果`x == y`，则平局.
+>   * 如果`x = (y + 1) % 3`，则P1赢.
+>   * 如果`x != y` 且 `x != (y + 1) % 3`，则P2赢.
+
+``` C++
+
+```
+
+#### 5.1.4 例题 4
+
+``` C++
+```
+
+> `str.pop_back()`：
+> * 功能：
+>   * 删除字符串中最后一个字符.
+
+#### 5.1.5 例题 5
+
+``` C++
+```
+
+> `str.substr(i, len)`：
+> * 功能：
+>   * 截取一个字符串的指定的子字符串.
+> * 参数声明（包左不包右）：
+>   * `i`：起始位置.
+>   * `len`：返回字符串段的长度，最多到最后一个字符截止.
+>       * 如果`len`参数省略，此时函数形式为`str.substr(i)`，那么默认从当前位置截取到最后一个字符截止.
+> * 返回值类型：
+>   * 返回指定的子字符串.
+
+### 5.2 习题讲解
+
+#### 5.2.1 习题 1
+
+``` C++
+```
+
+#### 5.2.2 习题 2
+
+``` C++
+```
+
+#### 5.2.3 习题 3
+
+``` C++
+```
+
+> 注意：
+> * `C++`语言的库要比`C`语言的库多很多.

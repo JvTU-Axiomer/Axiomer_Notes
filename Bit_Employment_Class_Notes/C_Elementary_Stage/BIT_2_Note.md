@@ -18,6 +18,8 @@
 
 > Talk is cheap, show me the code!
 
+> 人和人之间**最小的差距是智商，最大的差距是坚持**.
+
 ---
 
 **目录：**
@@ -1319,3 +1321,266 @@ while(表达式);
 >           ![调试窗口中字符数组`arr`中的字符元素](./assets/20230605175025.png)
 >
 >   可见输入字符串的结束标志`\0`也被包括在字符数组`arr`中.
+
+### 3.5 猜数字游戏实现
+
+> 猜数字游戏：
+> * 电脑会随机生成一个数字.
+> * 用户对生成的数字进行猜测：
+>   * 猜大了，提醒用户猜大了，继续猜.
+>   * 猜小了，提醒用户猜小了，继续猜.
+>   * 猜对了，提示“恭喜你，猜对了”，结束游戏.
+> * 玩完一把之后不过瘾，可以继续玩而不需要退出程序.
+
+``` C
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <time.h>
+
+    void menu()
+    {
+        printf("**********************************\n");
+        printf("*********** 1.    play ***********\n");
+        printf("*********** 0.    exit ***********\n");
+        printf("**********************************\n");
+    }
+    void game()
+    {
+        //1. 生成随机数.
+        int ret = rand() % 100 + 1;
+        //2. 猜数字.
+        int guess = 0;
+        while (1)
+        {
+            printf("请猜数字：>\n");
+            scanf("%d", &guess);
+            if (guess > ret)
+            {
+                printf("猜大了！\n");
+            }
+            else if (guess < ret)
+            {
+                printf("猜小了！\n");
+            }
+            else
+            {
+                printf("恭喜你，猜对了！\n");
+                break;
+            }
+        }
+    }
+
+    int main()
+    {
+        /* 打印游戏菜单. */
+        //1. 玩游戏.
+        //0. 退出游戏.
+        int choice = 0;
+        //对rand()函数进行设置随机起点，对其进行初始化处理.
+        srand((unsigned int)time(NULL));
+
+        do
+        {
+            menu();
+            printf("请选择：>\n");
+            scanf("%d", &choice);
+            switch (choice)
+            {
+            case 1:
+                printf("猜数字游戏\n");
+                game();
+                break;
+            case 0:
+                printf("退出游戏\n");
+                break;
+            default:
+                printf("选择错误\n");
+                break;
+            }
+        } while (choice);
+
+
+        return 0;
+    }
+```
+
+> `rand(void)`函数：
+> * 函数声明：
+>   * `int rand(void);`.
+> * 函数所在位置：
+>   * 包含于库`<stdlib.h>`中.
+> * 功能：
+>   * 生成随机数.
+> * 返回值类型：
+>   * 返回介于`0`到`RAND_MAX`之间的伪随机整数.
+>       * `RAND_MAX`：`0x7fff`（即`32767`）.
+> * 使用方法：
+>   * 在调用`rand()`函数之前，需要先调用函数`srand()`对随机数进行随机化：要给`srand()`传递一个变化的值——**计算机上的时间**，即**时间戳**.
+>   * `srand()`在一个工程文件中只需要调用一次对`rand()`函数进行初始化即可，不需要频繁大量地调用`srand()`函数，否则生成的随机数不够随机.
+>   * `srand((unsigned int)time(NULL))`.
+>       * 时间戳：`Unix`时间戳是指从`1970年1月1日`（`UTC/GMT`的午夜）开始所经过的秒数，不考虑闰秒.
+>       * `time(NULL)`函数位于库`<time.h>`中，会返回一个时间戳，其返回值类型为`time_t`，即`long long int`类型的整型.
+
+### 3.6 求最大公约数实现
+
+==方法一：== 暴力枚举法.
+
+``` C
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+
+    int main()
+    {
+        int m = 0;
+        int n = 0;
+        scanf("%d %d", &m, &n);
+        //计算.
+        int k = (m > n ? m : n);
+        while (1)
+        {
+            if (m % k == 0 && n % k == 0)
+            {
+                break;
+            }
+            k--;
+        }
+        printf("%d和%d的最大公约数为：%d\n", m, n, k);
+        return 0;
+    }
+```
+
+==方法二：== 辗转相除法.
+
+``` C
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+
+    int main()
+    {
+        int m = 0;
+        int n = 0;
+        scanf("%d %d", &m, &n);	//18 24.
+        int m_pre = m;
+        int n_pre = n;
+        //计算.
+        int k = 0;
+        while (k = m % n)
+        {
+            m = n;
+            n = k;
+        }
+        printf("%d和%d的最大公约数为：%d\n", m_pre, n_pre, n);
+        return 0;
+    }
+```
+
+---
+
+## 四、`goto`语句
+
+C语言中提供了可以随意滥用的`goto`语句和标记跳转的标号.
+
+从理论上讲，`goto`语句是没有必要的，实践中没有`goto`语句也可以很容易的写出代码.
+
+但是某些场合下`goto`语句还是用得着的，最常见的用法就是终止程序在某些深度嵌套的结构的处理过程.
+* 例如：一次跳出两层或多层循环.
+
+多层循环这种情况使用`break`是达不到目的的，它只能从最内层循环退出到上一层的循环.
+
+`goto`语言真正适合的场景如下：
+
+``` C
+    for(...)
+        for(...)
+    {
+            for(...)
+        {
+                if(disaster)
+                    goto error;
+        }
+    }
+
+        ...
+
+    error:
+    if(disaster)
+            // 处理错误情况
+```
+
+> 注意：
+> * `goto`语句只能在同一函数内部跳转，不可以跨函数使用！
+
+下面是使用`goto`语句的一个例子，然后使用循环的实现方式替换`goto`语句：
+
+``` C
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+
+    /* 关机程序. */
+        //1. 程序运行起来后，1分钟内电脑关机.
+        //2. 如果输入“我是猪”，就取消关机.
+
+    int main()
+    {
+        char input[20] = { 0 };
+        /* 关机程序. */
+        //1. 程序运行起来后，1分钟内电脑关机.
+        //2. 如果输入“我是猪”，就取消关机.
+        //程序倒计时关机.
+        system("shutdown -s -t 60");
+
+    again:
+        printf("请注意，你的电脑在1分钟内关机；如果输入“我是猪”，就取消关机！\n");
+        scanf("%s", input);	//输入.
+        if (strcmp(input, "我是猪") == 0)
+        {
+            system("shutdown -a");
+        }
+        else
+        {
+            goto again;
+        }
+        return 0;
+    }
+```
+
+而如果不适用`goto`语句，则可以使用循环：
+
+``` C
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+
+    /* 关机程序. */
+        //1. 程序运行起来后，1分钟内电脑关机.
+        //2. 如果输入“我是猪”，就取消关机.
+
+    int main()
+    {
+        char input[20] = { 0 };
+        /* 关机程序. */
+        //1. 程序运行起来后，1分钟内电脑关机.
+        //2. 如果输入“我是猪”，就取消关机.
+        //程序倒计时关机.
+        system("shutdown -s -t 60");
+
+        while (1)
+        {
+            printf("请注意，你的电脑在1分钟内关机；如果输入“我是猪”，就取消关机！\n");
+            scanf("%s", input);	//输入.
+            if (strcmp(input, "我是猪") == 0)
+            {
+                system("shutdown -a");
+                break;
+            }
+        }
+        
+        return 0;
+    }
+```
+
+> 注意：
+> * char是字符类型.字符的本质是字符的ASCII码值，而ASCII码值是整型；所以字符类型在归类的时候，是可以划分到整型家族的.
