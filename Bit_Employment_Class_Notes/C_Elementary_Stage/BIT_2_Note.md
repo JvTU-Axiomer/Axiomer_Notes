@@ -1476,6 +1476,139 @@ while(表达式);
     }
 ```
 
+### 3.7 素数求解实现
+
+> 素数（质数）：
+> * 定义：
+>   * 只能被`1`和它本身整除的数是素数（质数）.
+> * 判断方法（==试除法==）：
+>   * `2 ~ i-1` 之间的数字去试除`i`，如果能整除则`i`不是素数.
+>   * `2 ~ i-1` 之间的数字都不能整除`i`，则`i`是素数.
+
+> 推荐博文：`《素数求解的N种境界》`.
+
+==实现方式一：==
+
+> 思路：
+> 通过枚举从`2`到`i - 1`的所有因子并进行试除，从而找出素数（质数）.
+
+``` C
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    int main()
+    {
+        /* 打印 100 - 200 之间的素数实例. */
+        int i = 0;
+        int count = 0;
+        for (i = 100; i <= 200; i++)
+        {
+            //判断i是否为素数：
+            int j = 0;
+            int flag = 1;	//假设i是素数.
+            for (j = 2; j <= i - 1; j++)
+            {
+                if (i % j == 0)
+                {
+                    flag = 0;
+                    break;
+                }
+            }
+            if (flag == 1)
+            {
+                printf("%d ", i);
+                count++;
+            }
+        }
+        printf("\ncount = %d\n", count);
+
+        return 0;
+    }
+```
+
+==实现方式二：==
+
+> 思路：
+> 由于偶数不可能为素数（偶数一定包含组成因子`2`），因此可从`101`开始使用试除法判断是否为素数，并且设置枚举步长为`2`使得枚举到的待判断数据均为奇数.
+
+``` C
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    int main()
+    {
+        int i = 0;
+        int count = 0;
+        for (i = 101; i <= 200; i += 2)
+        {
+            //判断i是否为素数：
+            int j = 0;
+            int flag = 1;	//假设i是素数.
+            for (j = 2; j <= i - 1; j++)
+            {
+                if (i % j == 0)
+                {
+                    flag = 0;
+                    break;
+                }
+            }
+            if (flag == 1)
+            {
+                printf("%d ", i);
+                count++;
+            }
+        }
+        printf("\ncount = %d\n", count);
+
+        return 0;
+    }
+```
+
+==实现方式三：==
+
+> 思路：
+> 对于某一数据`k`的组成因子`m`和`n`（即`k = m * n`），在以上实现方式中，`m`和`n`总会出现以不同的顺序被重复枚举的情况（即`k = m * n`和`k = n * m`均被枚举）；因此可以设置被枚举因子的范围为`[2, sqrt(k)]`，即可省去无用的重复枚举.
+
+``` C
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <math.h>
+
+    int main()
+    {
+        int i = 0;
+        int count = 0;
+        for (i = 101; i <= 200; i += 2)
+        {
+            //判断i是否为素数：
+            int j = 0;
+            int flag = 1;	//假设i是素数.
+            for (j = 2; j <= sqrt(i); j++)
+            {
+                if (i % j == 0)
+                {
+                    flag = 0;
+                    break;
+                }
+            }
+            if (flag == 1)
+            {
+                printf("%d ", i);
+                count++;
+            }
+        }
+        printf("\ncount = %d\n", count);
+
+        return 0;
+    }
+```
+
+> `sqrt(num)`函数：
+> * 功能：
+>   * 对`num`进行开平方运算并返回计算结果.
+> * 位置：
+>   * `sqrt()`是库函数，被包含在头文件`<math.h>`中.
+
 ---
 
 ## 四、`goto`语句

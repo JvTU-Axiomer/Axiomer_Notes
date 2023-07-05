@@ -1177,6 +1177,7 @@
         {
             cnt[str[i] - 'a']++;
         }
+        //确保输出的是满足条件的字符中位置最靠前的那个.
         for (int i = 0; i < len; i++)
         {
             if (cnt[str[i] - 'a'] == 1)
@@ -1209,6 +1210,7 @@
         {
             cnt[str[i] - 'a']++;
         }
+        //确保输出的是满足条件的字符中位置最靠前的那个.
         for (int i = 0; str[i]; i++)
         {
             if (cnt[str[i] - 'a'] == 1)
@@ -1516,6 +1518,7 @@
     #include <iostream>
     #include <cstring>
     using namespace std;
+
     #define MAX 1000
     int main()
     {
@@ -1568,12 +1571,67 @@
 >   * 如果`x != y` 且 `x != (y + 1) % 3`，则P2赢.
 
 ``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
 
+    int main()
+    {
+        int T = 0;
+        cin >> T;
+        for (int i = 0; i < T; i++)
+        {
+            string s1, s2;
+            cin >> s1 >> s2;
+
+            int x, y;
+            if (s1 == "Hunter") x = 0;
+            else if (s1 == "Bear") x = 1;
+            else x = 2;
+            if (s2 == "Hunter") y = 0;
+            else if (s2 == "Bear") y = 1;
+            else y = 2;
+            if (x == y)
+            {
+                cout << "Tie" << endl;
+            }
+            else if (x == (y + 1) % 3)
+            {
+                cout << "Player1" << endl;
+            }
+            else
+            {
+                cout << "Player2" << endl;
+            }
+        }
+        return 0;
+    }
 ```
 
 #### 5.1.4 例题 4
 
 ``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    int main()
+    {
+        string str;
+        getline(cin, str);
+
+        string str_new;
+        for (char c : str)
+        {
+            str_new = str_new + c + ' ';
+        }
+        str_new.pop_back();	//把最后一个字符删掉.
+
+        cout << str_new << endl;
+
+        return 0;
+    }
 ```
 
 > `str.pop_back()`：
@@ -1583,6 +1641,31 @@
 #### 5.1.5 例题 5
 
 ``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+
+    int main()
+    {
+        string str, substr;
+        while (cin >> str >> substr)
+        {
+            int max_index = 0;
+            for (int i = 0; i < str.size(); i++)
+            {
+                if (str[i] > str[max_index])
+                {
+                    max_index = i;
+                }
+            }
+            string laststr = str.substr(max_index + 1);
+            string prestr = str.substr(0, max_index + 1);
+            str = prestr + substr + laststr;
+
+            cout << str << endl;
+        }
+        return 0;
+    }
 ```
 
 > `str.substr(i, len)`：
