@@ -1683,17 +1683,184 @@
 #### 5.2.1 习题 1
 
 ``` C++
+    #include <cstdio>
+    #include <iostream>
+    using namespace std;
+
+    int main()
+    {
+        double k;
+        cin >> k;
+        string a, b;
+        cin >> a >> b;
+        double cnt = 0;
+        for (int i = 0; a[i]; i++)
+        {
+            if (a[i] == b[i])
+            {
+                cnt = cnt + 1;
+            }
+        }
+        double ret = cnt / a.size();
+        if (ret >= k)
+        {
+            cout << "yes" << endl;
+        }
+        else
+        {
+            cout << "no" << endl;
+        }
+
+        return 0;
+    }
 ```
 
 #### 5.2.2 习题 2
 
 ``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    int main()
+    {
+        string a, b;
+        getline(cin, a);
+        getline(cin, b);
+        for (int i = 0; a[i]; i++)
+        {
+            if (a[i] >= 'A' && a[i] <= 'Z')
+            {
+                a[i] = a[i] + 32;
+            }
+        }
+        for (int i = 0; b[i]; i++)
+        {
+            if (b[i] >= 'A' && b[i] <= 'Z')
+            {
+                b[i] = b[i] + 32;
+            }
+        }
+        if (a == b)
+        {
+            cout << "=" << endl;
+        }
+        else if (a > b)
+        {
+            cout << ">" << endl;
+        }
+        else
+        {
+            cout << "<" << endl;
+        }
+
+        return 0;
+    }
 ```
 
 #### 5.2.3 习题 3
 
 ``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    int main()
+    {
+        string str;
+        getline(cin, str);
+        for (int i = 0; str[i]; i++)
+        {
+            if (str[i] == ' ')
+            {
+                int j = i + 1;
+                while (str[j] == ' ')
+                {
+                    str = str.substr(0, j) + str.substr(j + 1);
+                }
+            }
+        }
+        cout << str << endl;
+
+        return 0;
+    }
 ```
 
 > 注意：
 > * `C++`语言的库要比`C`语言的库多很多.
+
+#### 5.2.4 习题 4
+
+``` C++
+    #include <cstdio>
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    int main()
+    {
+        string str;
+        getline(cin, str);
+        for (int i = 0; str[i]; i++)
+        {
+            if (str[i] >= 'a' && str[i] <= 'z')
+            {
+                str[i] = (str[i] - 'a' + 1) % 26 + 'a';
+            }
+            if (str[i] >= 'A' && str[i] <= 'Z')
+            {
+                str[i] = (str[i] - 'A' + 1) % 26 + 'A';
+            }
+        }
+        cout << str << endl;
+
+        return 0;
+    }
+```
+
+> 字符串常见报错：`Expression:string subscript out of range`.
+> * 问题描述：**字符串边界溢出**.
+>   * **溢出**：对`string str`==未初始化==；如果要对`str`进行操作，需要对`str`进行==初始化==，给其分配相应的存储空间.
+>   * **初始化**：为`string`变量分配内存空间（==没有空间，谈何操作！==）.
+> * **通俗解释**：存在`string str`的空间大小在访问下标为`k = 0`的数组元素时，都无法正常访问的可能性.
+> 
+> `string`类型是**动态分配类型**，问题转为：==动态分配类型变量未初始化强行以下标形式访问元素==.
+> * 首先要明确`string`类型的动态分配不是根据下标分配，而是==所存储的数据大小==.
+> * 但是，==下标访问操作是动态分配的空间大小确定后才能进行的操作==.
+> 
+> `string`类型虽然是动态内存，但==不会自动分配所需空间==，如果未对`string`对象插入内容，下标访问操作就会==报错==，故需要先让`string`对象==分配到所需大小的空间==.
+> * **插入内容**：动态内存类型可以根据插入内容的大小调控其空间.
+>
+> 以下为`string`类型动态分配内存的三种方式：
+> * `str.insert(ch)`.
+> * `str += ch`.
+> * `str = "string_init"`.
+>
+> 因此，该异常报错的解决方式为：
+>   ``` C++
+>       string str;
+>       char ch;
+>       /* 解决方式一： */
+>       str.insert(ch);
+>       /* 解决方式二： */
+>       s += ch;
+>       /* 解决方式三： */
+>       s = "动态分配内存的三种方式.";
+>   ```
+>
+> 以上代码块内的三种操作是==先有==赋值（插入）操作（的意图），==然后==根据赋值（插入）对象大小动态调控空间，==最后==输入值成功插入（访问）刚分配的空间.
+>
+> 而下面为一段会报错的错误代码：
+>   ``` C++
+>       #define MAX 100
+>       string str;
+>       char ch;
+>       for (int i = 0; i < MAX; i++)
+>       {
+>           str[i] = ch;
+>       }
+>   ```
+>
+> 该代码段的问题在于是==先去==访问下标为`i`的位置的空间，==然后==向该空间进行赋值操作，但因为`str`==未初始化==，下标`i`对应的空间自然==没有被分配==，==导致==赋值操作无法正常进行，即==没有空间去放置输入的元素==，因此会发生==溢出错误==.
